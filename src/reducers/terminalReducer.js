@@ -1,6 +1,6 @@
 import { handleActions, createAction } from "redux-actions";
 import { all, call, put, takeEvery, select } from "redux-saga/effects";
-
+import { renderExpensesString } from "../helpers";
 const REDUCER_NAME = "terminal";
 
 const UPDATE_HISTORY = "UPDATE_HISTORY";
@@ -76,6 +76,20 @@ function* getCurrenciesSaga() {
   yield put(setSuccess());
 }
 
+function* updateHistorySaga({ payload: { date, title } }) {
+  const data = yield select(expensesSelector);
+  const expensesByDate = data[date];
+
+  yield put(
+    updateHistory({
+      text: expensesByDate.map(renderExpensesString).join(" "),
+    })
+  );
+}
+
 export function* saga() {
-  yield all([takeEvery(GET_CURRENCIES, getCurrenciesSaga)]);
+  yield all([
+    takeEvery(GET_CURRENCIES, getCurrenciesSaga),
+    takeEvery(UPDATE_EXPENSES, updateHistorySaga),
+  ]);
 }

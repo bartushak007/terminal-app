@@ -19,7 +19,7 @@ const Terminal = () => {
     <>
       <div className={`${styles.history} ${isLoading ? styles.isLoading : ""}`}>
         {history.map(({ text, isCommand, hasError }, i) => (
-          <p
+          <pre
             className={
               hasError
                 ? styles.errorInCommand
@@ -29,9 +29,9 @@ const Terminal = () => {
             }
             key={i}
           >
-            {isCommand ? "> " : "-- "}
+            {isCommand ? "> " : " "}
             {text}
-          </p>
+          </pre>
         ))}
         <form
           onKeyDown={fillInputFromHistory}
