@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import styles from "./terminal.module.css";
 import useTerminal from "../../customHooks/useTerminal";
@@ -11,11 +11,13 @@ const Terminal = () => {
     fillInputFromHistory,
     terminalInput,
     history,
+    isLoading,
+    currencies
   } = useTerminal();
-  
+
   return (
     <>
-      <div className={styles.history}>
+      <div className={`${styles.history} ${isLoading ? styles.isLoading : ""}`}>
         {history.map(({ text, isCommand, hasError }, i) => (
           <p
             className={
