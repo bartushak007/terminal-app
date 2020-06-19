@@ -46,16 +46,12 @@ const useTerminal = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const commandsList = terminalInput.split(" ");
+    const commandsList = terminalInput.trim().split(" ");
     let hasError = false;
 
     switch (commandsList[0].toLowerCase()) {
       case "add": {
-        hasError = !checkIsCommandFull(
-          commandsList,
-          ["add", "list"],
-          currencies
-        );
+        hasError = !checkIsCommandFull(commandsList, ["add"], currencies);
         !hasError && dispatchUpdateExpenses(commandsList);
         break;
       }
@@ -64,6 +60,9 @@ const useTerminal = () => {
           () =>
             setHistory({
               text: Object.values(expenses)
+                .sort(([{ date: a }], [{ date: b }]) => {
+                  return moment(a).valueOf() - moment(b).valueOf();
+                })
                 .map((expenses) => expenses.map(renderExpensesString).join(" "))
                 .join(" "),
             }),

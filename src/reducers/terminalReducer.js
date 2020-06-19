@@ -123,6 +123,9 @@ function* updateHistorySaga() {
   yield put(
     updateHistory({
       text: Object.values(expenses)
+        .sort(([{ date: a }], [{ date: b }]) => {
+          return moment(a).valueOf() - moment(b).valueOf();
+        })
         .map((expenses) => expenses.map(renderExpensesString).join(" "))
         .join(" "),
     })
@@ -171,7 +174,7 @@ function* getTotalSaga({ payload }) {
 export function* saga() {
   yield all([
     takeEvery(GET_CURRENCIES, getCurrenciesSaga),
-    takeEvery(UPDATE_EXPENSES, updateHistoryByKeySaga),
+    takeEvery(UPDATE_EXPENSES, updateHistorySaga),
     takeEvery(CLEAR_EXPENSES, updateHistorySaga),
     takeEvery(GET_TOTAL, getTotalSaga),
   ]);
