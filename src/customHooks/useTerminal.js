@@ -11,16 +11,17 @@ import {
   updateExpenses,
   expensesSelector,
   clearExpenses,
+  getTotal,
 } from "../reducers/terminalReducer";
 
 const useTerminal = () => {
   const dispatch = useDispatch();
   const [terminalInput, setTerminalInput] = useState("");
 
-  function getCurrenciesEffect () {
+  function getCurrenciesEffect() {
     dispatch(getCurrencies());
-  };
-  useEffect(getCurrenciesEffect, []);  
+  }
+  useEffect(getCurrenciesEffect, []);
 
   const history = useSelector(historySelector);
   const isLoading = useSelector(loadingSelector);
@@ -77,6 +78,15 @@ const useTerminal = () => {
           expenses[moment(commandsList[1].toLowerCase()).format("YYYY-MM-DD")]
         ) {
           dispatch(clearExpenses(commandsList[1].toLowerCase()));
+        } else {
+          hasError = true;
+        }
+        break;
+      }
+
+      case "total": {
+        if (currencies.includes(commandsList[1].toUpperCase())) {
+          dispatch(getTotal(commandsList[1].toUpperCase()));
         } else {
           hasError = true;
         }
