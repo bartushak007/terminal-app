@@ -73,7 +73,6 @@ export default handleActions(
     },
     [getTotal]: (state) => ({
       ...state,
-      load: true,
     }),
   },
   initialState
@@ -149,7 +148,7 @@ function* getTotalSaga({ payload }) {
     (sum, [key, amount]) => sum + amount / rates[key],
     0
   );
-  
+
   const total = totalInBaseValute * rates[payload];
 
   yield delay(0);

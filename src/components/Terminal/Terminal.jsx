@@ -16,7 +16,8 @@ const Terminal = () => {
 
   return (
     <>
-      <div className={`${styles.history} ${isLoading ? styles.isLoading : ""}`}>
+      <div className={`${styles.history} ${isLoading ? styles.isLoading : ''}`}>
+        <div className={styles.loader}/>
         {history.map(({ text, isCommand, hasError }, i) => (
           <pre
             className={
