@@ -49,18 +49,18 @@ const Terminal = () => {
   );
 };
 
-Terminal.propTypes = {
-  history: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      hasError: PropTypes.boolean,
-      isCommand: PropTypes.boolean,
-    })
-  ).isRequired,
-  submitHandler: PropTypes.func,
-  terminalInput: PropTypes.string,
-  onChangeHandler: PropTypes.func,
-  fillInputFromHistory: PropTypes.func,
-};
+// Terminal.propTypes = {
+//   history: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       text: PropTypes.string.isRequired,
+//       hasError: PropTypes.boolean,
+//       isCommand: PropTypes.boolean,
+//     })
+//   ).isRequired,
+//   submitHandler: PropTypes.func,
+//   terminalInput: PropTypes.string,
+//   onChangeHandler: PropTypes.func,
+//   fillInputFromHistory: PropTypes.func,
+// };
 
 export default Terminal;
