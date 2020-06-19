@@ -12,7 +12,6 @@ const Terminal = () => {
     terminalInput,
     history,
     isLoading,
-    currencies
   } = useTerminal();
 
   return (

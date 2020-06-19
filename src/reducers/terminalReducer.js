@@ -1,6 +1,8 @@
 import { handleActions, createAction } from "redux-actions";
-import { all, call, put, takeEvery, select } from "redux-saga/effects";
+import { all, call, put, takeEvery, select, delay } from "redux-saga/effects";
 import { renderExpensesString } from "../helpers";
+import moment from "moment";
+
 const REDUCER_NAME = "terminal";
 
 const UPDATE_HISTORY = "UPDATE_HISTORY";
@@ -8,12 +10,14 @@ const GET_CURRENCIES = "GET_CURRENCIES";
 const SET_CURRENCIES = "SET_CURRENCIES";
 const SET_SUCCESS = "SET_SUCCESS";
 const UPDATE_EXPENSES = "UPDATE_EXPENSES";
+const CLEAR_EXPENSES = "CLEAR_EXPENSES";
 
 export const updateHistory = createAction(UPDATE_HISTORY);
 export const getCurrencies = createAction(GET_CURRENCIES);
 export const setCurrencies = createAction(SET_CURRENCIES);
 export const setSuccess = createAction(SET_SUCCESS);
 export const updateExpenses = createAction(UPDATE_EXPENSES);
+export const clearExpenses = createAction(CLEAR_EXPENSES);
 
 const initialState = {
   history: [],
@@ -40,13 +44,27 @@ export default handleActions(
       ...state,
       load: false,
     }),
-    [updateExpenses]: (state, { payload }) => ({
-      ...state,
-      expenses: {
-        ...state.expenses,
-        [payload.date]: [...(state.expenses[payload.date] || []), payload],
-      },
-    }),
+    [updateExpenses]: (state, { payload }) => {      
+      return {
+        ...state,
+        expenses: {
+          ...state.expenses,
+          [payload.date]: [...(state.expenses[payload.date] || []), payload],
+        },
+      };
+    },
+    [clearExpenses]: (state, { payload }) => {
+      const clearedExpensesEntries = Object.entries(state.expenses).filter(
+        ([key]) =>
+          moment(key).format("YYYY-MM-DD") !==
+          moment(payload).format("YYYY-MM-DD")
+      );
+
+      return {
+        ...state,
+        expenses: Object.fromEntries(clearedExpensesEntries),
+      };
+    },
   },
   initialState
 );
@@ -76,10 +94,11 @@ function* getCurrenciesSaga() {
   yield put(setSuccess());
 }
 
-function* updateHistorySaga({ payload: { date, title } }) {
+function* updateHistoryByKeySaga({ payload: { date, title } }) {
   const data = yield select(expensesSelector);
   const expensesByDate = data[date];
 
+  yield delay(0)
   yield put(
     updateHistory({
       text: expensesByDate.map(renderExpensesString).join(" "),
@@ -87,9 +106,23 @@ function* updateHistorySaga({ payload: { date, title } }) {
   );
 }
 
+function* updateHistorySaga() {
+  const expenses = yield select(expensesSelector);
+  
+  yield delay(0)
+  yield put(
+    updateHistory({
+      text: Object.values(expenses)
+        .map((expenses) => expenses.map(renderExpensesString).join(" "))
+        .join(" "),
+    })
+  );
+}
+
 export function* saga() {
   yield all([
     takeEvery(GET_CURRENCIES, getCurrenciesSaga),
-    takeEvery(UPDATE_EXPENSES, updateHistorySaga),
+    takeEvery(UPDATE_EXPENSES, updateHistoryByKeySaga),
+    takeEvery(CLEAR_EXPENSES, updateHistorySaga),
   ]);
 }
