@@ -4,7 +4,7 @@ import Terminal from "./components/Terminal";
 
 function App() {
   return (
-    <div className="relative fullscreenHeight">
+    <div className="App relative fullscreenHeight">
       <Terminal />
     </div>
   );
