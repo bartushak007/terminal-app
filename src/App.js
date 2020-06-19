@@ -1,11 +1,11 @@
 import React from "react";
 
-import TerminalContainer from "./containers/TerminalContainer";
+import Terminal from "./components/Terminal";
 
 function App() {
   return (
     <div className="relative fullscreenHeight">
-      <TerminalContainer />
+      <Terminal />
     </div>
   );
 }
