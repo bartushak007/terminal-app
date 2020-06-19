@@ -7,6 +7,8 @@ import {
   getCurrencies,
   loadingSelector,
   currenciesSelector,
+  updateExpenses,
+  expensesSelector,
 } from "../reducers/terminalReducer";
 
 const useTerminal = () => {
@@ -24,15 +26,26 @@ const useTerminal = () => {
   const setHistory = (payload) => dispatch(updateHistory(payload));
   const onChangeHandler = ({ target: { value } }) => setTerminalInput(value);
 
+  const dispatchUpdateExpenses = ([_, date, amount, currency, ...title]) => {
+    dispatch(
+      updateExpenses({
+        date,
+        amount,
+        currency,
+        title: title.join(' '),
+      })
+    );
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
     const commandsList = terminalInput.split(" ");
-    const hasError = !checkIsCommandValid(commandsList, ["list"], currencies);
+    const hasError = !checkIsCommandValid(commandsList, ["add"], currencies);
 
     switch (commandsList[0].toLowerCase()) {
-      case "list": {
-        // console.log("good");
+      case "add": {
+        dispatchUpdateExpenses(commandsList);
         break;
       }
       default:
