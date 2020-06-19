@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import styles from "./terminal.module.css";
 
 const Terminal = ({
@@ -41,5 +43,19 @@ const Terminal = ({
     </div>
   </>
 );
+
+Terminal.propTypes = {
+  history: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      hasError: PropTypes.boolean,
+      isCommand: PropTypes.boolean,
+    })
+  ).isRequired,
+  submitHandler: PropTypes.func,
+  terminalInput: PropTypes.string,
+  onChangeHandler: PropTypes.func,
+  fillInputFromHistory: PropTypes.func,
+};
 
 export default Terminal;
