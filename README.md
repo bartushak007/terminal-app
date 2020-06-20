@@ -15,6 +15,7 @@
 
 5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-It seems that http://data.fixer.io/ does not work on gh pages.
+http://data.fixer.io/ does not work on gh-pages for some reasons.
 Clone and run it on a local machine.
+Otherwise feel free to use default currencies EUR, PLN, USD, UAH, RUB as of June 20, 2020 here on
 [https://bartushak007.github.io/terminal-app](https://bartushak007.github.io/terminal-app).

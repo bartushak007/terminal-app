@@ -23,8 +23,14 @@ export const getTotal = createAction(GET_TOTAL);
 
 const initialState = {
   history: [],
-  currencies: [],
-  rates: [],
+  currencies: ["EUR", "PLN", "USD", "UAH", "RUB"],
+  rates: {
+    EUR: 1,
+    PLN: 4.463731,
+    USD: 1.117735,
+    UAH: 29.88044,
+    RUB: 77.598202,
+  },
   baseValute: "EUR",
   load: false,
   expenses: {},
@@ -96,7 +102,7 @@ function* getCurrenciesSaga() {
   } catch (e) {
     yield put(
       updateHistory({
-        text: "fetch error http://data.fixer.io/api/latest",
+        text: "fetch error http://data.fixer.io/api/latest\n available default currencies EUR, PLN, USD, UAH, RUB as of June 20, 2020",
         error: true,
       })
     );
